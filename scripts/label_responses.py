@@ -10,6 +10,7 @@ OUT_FILE = os.path.join(DATA_DIR, "labeled_dataset.csv")
 SOURCES = {
     "gpt4": "gpt-4_responses.csv",
     "gpt3.5": "gpt-35_responses.csv",
+    "human": "human_responses.csv",
 
 }
 

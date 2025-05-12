@@ -5,23 +5,27 @@ import seaborn as sns
 from sklearn.metrics import confusion_matrix, classification_report, accuracy_score, precision_score, recall_score, f1_score
 
 # === Load and Prepare Data ===
-df = pd.read_csv("data\llm_judgments_gpt-4.csv")  # Change filename if needed
+df = pd.read_csv("data/llm_judgments_gpt-4.csv")
+df = df[df["llm_guess"].isin(["human", "ai"])]  
 OUTPUT_DIR = "figures"
+
 
 # === Map questions to topics ===
 topic_map = {
-    "What’s something fun you did last weekend?": "casual",
+    "What's something fun you did last weekend?": "casual",
     "What kind of music do you like to listen to when you're relaxing?": "casual",
     "How would you define multiplication using addition?": "educational",
     "Explain the concept of a binary search algorithm.": "educational",
     "Is it better to be happy or to know the truth?": "philosophical",
     "If no one remembers your actions, do they still matter?": "philosophical",
-    "Rewrite this sentence to sound more formal: “I messed up the report.”": "writing",
+    "Rewrite this sentence to sound more formal: I messed up the report.": "writing",
     "Write a short email requesting an extension for a project deadline.": "writing",
-    "I’m torn between a high-paying job I dislike and one I enjoy. What should I do?": "advice",
-    "I had a fight with a close friend — should I apologize even if I wasn’t wrong?": "advice",
+    "I'm torn between a high-paying job I dislike and one I enjoy. What should I do?": "advice",
+    "I had a fight with a close friend — should I apologize even if I wasn't wrong?": "advice",
 }
 df["topic"] = df["question"].map(topic_map).fillna("unknown")
+unknown_df = df[df["topic"] == "unknown"]
+print(unknown_df)
 
 # === Convert labels ===
 df["true_label"] = df["source"].apply(lambda x: 1 if x == "human" else 0)
